@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Pizzaria</title>
+    <link rel="stylesheet" href="pizzaria.css">
+</head>
+<body>
+    <h1>Pizzaria Fornalha</h1>
+
+    <button onclick="voltarAoLogin()" id="btn-voltar">Sair</button>
+
+    <nav>
+        <button onclick="mostrarSecao('cadastro')">Cadastrar Pizza</button>
+        <button onclick="mostrarSecao('consulta')">Consultar Pizzas</button>
+        <button onclick="mostrarSecao('alterar')">Alterar Pizza</button>
+        <button onclick="mostrarSecao('pedido')">Pedir Pizza</button>
+        <button onclick="mostrarSecao('venda')">Registrar Venda</button>
+        <button onclick="gerarRelatorioVendas()">Relatório de Vendas</button>
+    </nav>
+
+    <div id="mensagem"></div>
+
+    <!-- Cadastro -->
+    <section id="cadastro" class="secao">
+        <h2>Cadastro de Pizza</h2>
+        <input type="text" id="nome" placeholder="Nome da pizza">
+        <input type="text" id="ingredientes" placeholder="Ingredientes">
+        <input type="number" id="preco" placeholder="Preço">
+        <button onclick="adicionarPizza()">Adicionar Pizza</button>
+    </section>
+
+    <!-- Consulta -->
+    <section id="consulta" class="secao hidden">
+        <h2>Consultar Pizzas</h2>
+        <input type="text" id="busca" placeholder="Buscar por nome" oninput="buscarPizza()">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Ingredientes</th>
+                    <th>Preço</th>
+                </tr>
+            </thead>
+            <tbody id="lista-pizzas"></tbody>
+        </table>
+    </section>
+
+    <!-- Alterar -->
+    <section id="alterar" class="secao hidden">
+        <h2>Alterar Pizza</h2>
+        <input type="text" id="buscar-alterar" placeholder="Nome da pizza para alterar">
+        <button onclick="buscarPizzaAlterar()">Buscar</button>
+
+        <div id="form-alterar" class="hidden">
+            <input type="text" id="novo-nome" placeholder="Novo nome">
+            <input type="text" id="novo-ingredientes" placeholder="Novos ingredientes">
+            <input type="number" id="novo-preco" placeholder="Novo preço">
+            <button onclick="alterarPizza()">Salvar Alterações</button>
+        </div>
+    </section>
+
+    <!-- Pedido -->
+    <section id="pedido" class="secao hidden">
+        <h2>Pedir Pizza</h2>
+        <input type="text" id="pedido-nome" placeholder="Nome da pizza para pedir">
+        <button onclick="pedirPizza()">Pedir</button>
+    </section>
+
+    <!-- Venda -->
+    <section id="venda" class="secao hidden">
+        <h2>Registrar Venda</h2>
+        <input type="text" id="venda-nome" placeholder="Nome da pizza">
+        <input type="number" id="venda-preco" placeholder="Preço">
+        <input type="text" id="venda-cliente" placeholder="Nome do cliente">
+        <button onclick="registrarVenda()">Registrar</button>
+        <h3>Vendas Recentes</h3>
+        <ul id="lista-vendas"></ul>
+    </section>
+
+    <!-- Relatório -->
+    <section id="relatorio-vendas" class="secao hidden">
+        <h2>Relatório de Vendas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Pizza</th>
+                    <th>Preço</th>
+                    <th>Cliente</th>
+                </tr>
+            </thead>
+            <tbody id="relatorio-tabela"></tbody>
+        </table>
+    </section>
+
+    <script src="pizzaria.js"></script>
+</body>
+</html>
