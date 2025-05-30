@@ -70,8 +70,9 @@
     <!-- Venda -->
     <section id="venda" class="secao hidden">
         <h2>Registrar Venda</h2>
-        <input type="text" id="venda-nome" placeholder="Nome da pizza">
-        <input type="number" id="venda-preco" placeholder="Preço">
+        <select id="venda-pizza">
+            <option value="">Selecione uma pizza</option>
+        </select>
         <input type="text" id="venda-cliente" placeholder="Nome do cliente">
         <button onclick="registrarVenda()">Registrar</button>
         <h3>Vendas Recentes</h3>
