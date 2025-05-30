@@ -6,7 +6,8 @@ function mostrarSecao(secao) {
     const secoes = ["cadastro", "consulta", "alterar", "pedido", "venda", "relatorio-vendas"];
     secoes.forEach(id => document.getElementById(id).classList.add("hidden"));
     document.getElementById(secao).classList.remove("hidden");
-    exibirMensagem(""); // Limpa mensagens anteriores
+    exibirMensagem("");
+    if (secao === "venda") atualizarSelectPizzas(); // atualizar select quando for pra venda
 }
 
 function exibirMensagem(texto, tipo = "info") {
@@ -26,10 +27,24 @@ function adicionarPizza() {
         document.getElementById("ingredientes").value = "";
         document.getElementById("preco").value = "";
         atualizarLista();
+        atualizarSelectPizzas(); // atualiza também o select
         exibirMensagem("Pizza adicionada com sucesso!");
     } else {
         exibirMensagem("Preencha todos os campos corretamente.", "erro");
     }
+}
+
+function atualizarSelectPizzas() {
+    const select = document.getElementById("venda-pizza");
+    if (!select) return;
+
+    select.innerHTML = `<option value="">Selecione uma pizza</option>`;
+    pizzas.forEach((pizza, index) => {
+        const option = document.createElement("option");
+        option.value = index;
+        option.textContent = `${pizza.nome} - R$ ${pizza.preco.toFixed(2)}`;
+        select.appendChild(option);
+    });
 }
 
 function buscarPizza() {
@@ -79,6 +94,7 @@ function alterarPizza() {
             pizzaParaAlterar.ingredientes = novoIngredientes;
             pizzaParaAlterar.preco = novoPreco;
             atualizarLista();
+            atualizarSelectPizzas();
             document.getElementById("form-alterar").classList.add("hidden");
             exibirMensagem("Pizza alterada com sucesso!");
         } else {
@@ -94,6 +110,7 @@ function pedirPizza() {
     if (pizzaEncontrada) {
         pizzas = pizzas.filter(p => p !== pizzaEncontrada);
         atualizarLista();
+        atualizarSelectPizzas();
         exibirMensagem(`Pedido realizado: ${pizzaEncontrada.nome} - R$ ${pizzaEncontrada.preco.toFixed(2)}`);
     } else {
         exibirMensagem("Pizza não encontrada para pedido.", "erro");
@@ -101,25 +118,26 @@ function pedirPizza() {
 }
 
 function registrarVenda() {
-    const nome = document.getElementById("venda-nome").value.trim();
-    const preco = parseFloat(document.getElementById("venda-preco").value);
+    const select = document.getElementById("venda-pizza");
+    const index = select.value;
     const cliente = document.getElementById("venda-cliente").value.trim();
 
-    if (nome && !isNaN(preco) && cliente) {
-        vendas.push({ nome, preco, cliente });
-
-        const item = document.createElement("li");
-        item.textContent = `Pizza: ${nome} | R$${preco.toFixed(2)} | Cliente: ${cliente}`;
-        document.getElementById("lista-vendas").appendChild(item);
-
-        document.getElementById("venda-nome").value = "";
-        document.getElementById("venda-preco").value = "";
-        document.getElementById("venda-cliente").value = "";
-
-        exibirMensagem("Venda registrada com sucesso!");
-    } else {
-        exibirMensagem("Preencha todos os campos da venda corretamente.", "erro");
+    if (index === "" || !cliente) {
+        exibirMensagem("Selecione uma pizza e informe o nome do cliente.", "erro");
+        return;
     }
+
+    const pizzaSelecionada = pizzas[index];
+    vendas.push({ nome: pizzaSelecionada.nome, preco: pizzaSelecionada.preco, cliente });
+
+    const item = document.createElement("li");
+    item.textContent = `Pizza: ${pizzaSelecionada.nome} | R$${pizzaSelecionada.preco.toFixed(2)} | Cliente: ${cliente}`;
+    document.getElementById("lista-vendas").appendChild(item);
+
+    document.getElementById("venda-pizza").value = "";
+    document.getElementById("venda-cliente").value = "";
+
+    exibirMensagem("Venda registrada com sucesso!");
 }
 
 function gerarRelatorioVendas() {
@@ -156,4 +174,3 @@ function gerarRelatorioVendas() {
 function voltarAoLogin() {
     window.location.href = "login.html";
 }
-
